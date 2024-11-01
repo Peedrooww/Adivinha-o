@@ -1,162 +1,73 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+import random
 
-# C extensions
-*.so
+def escolher_dificuldade():
+    print("Escolha o nível de dificuldade:")
+    print("1. Fácil (números de 1 a 50, 10 tentativas)")
+    print("2. Médio (números de 1 a 100, 7 tentativas)")
+    print("3. Difícil (números de 1 a 200, 5 tentativas)")
+    
+    while True:
+        escolha = input("Digite o número correspondente ao nível de dificuldade: ")
+        if escolha == '1':
+            return 50, 10  # Fácil
+        elif escolha == '2':
+            return 100, 7  # Médio
+        elif escolha == '3':
+            return 200, 5  # Difícil
+        else:
+            print("Escolha inválida, tente novamente.")
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+def adivinhacao():
+    print("Bem-vindo ao jogo de adivinhação!")
+    
+    # Escolha o nível de dificuldade
+    limite_numero, tentativas_maximas = escolher_dificuldade()
+    
+    numero_secreto = random.randint(1, limite_numero)
+    tentativas = 0
+    
+    while tentativas < tentativas_maximas:
+        palpite = input(f"Adivinhe um número entre 1 e {limite_numero}: ")
+        
+        if not palpite.isdigit():
+            print("Por favor, insira um número válido.")
+            continue
+        
+        palpite = int(palpite)
+        tentativas += 1
+        
+        if palpite < numero_secreto:
+            print("Baixo!")
+        elif palpite > numero_secreto:
+            print("Alto!")
+        else:
+            print(f"Parabéns! Você acertou o número {numero_secreto} em {tentativas} tentativas.")
+            return tentativas_maximas - tentativas  # Retorna a pontuação baseada nas tentativas restantes
+    
+    print(f"Você perdeu! O número correto era {numero_secreto}.")
+    return 0  # Se perder, retorna 0 pontos
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+def jogar_novamente():
+    while True:
+        jogar = input("Deseja jogar novamente? (s/n): ").lower()
+        if jogar == 's':
+            return True
+        elif jogar == 'n':
+            return False
+        else:
+            print("Resposta inválida. Por favor, digite 's' ou 'n'.")
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
+def jogo_adivinhacao():
+    pontuacao_total = 0
+    jogar = True
+    
+    while jogar:
+        pontuacao = adivinhacao()
+        pontuacao_total += pontuacao
+        print(f"Sua pontuação total até agora é: {pontuacao_total} pontos.")
+        jogar = jogar_novamente()
+    
+    print(f"Obrigado por jogar! Sua pontuação final foi: {pontuacao_total} pontos.")
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-cover/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
-
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#pdm.lock
-#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
-#   in version control.
-#   https://pdm.fming.dev/latest/usage/project/#working-with-version-control
-.pdm.toml
-.pdm-python
-.pdm-build/
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pytype static type analyzer
-.pytype/
-
-# Cython debug symbols
-cython_debug/
-
-# PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+# Inicia o jogo
+jogo_adivinhacao()
